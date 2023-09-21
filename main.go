@@ -3,11 +3,38 @@ package main
 import (
 	"fmt"
 	"slices"
+    "time"
 
 	"github.com/gocolly/colly"
 )
 
 func main() {
+    // Assume that all figures have been added at the start.
+    oldFigures := getNewFigures() 
+
+    for true {
+        newFigures := getNewFigures()
+
+        // Compare the lists
+        var updatedFigures []string
+        updatedFigures = findNewItems(newFigures, oldFigures)
+        if len(updatedFigures) != 0 {
+            for _, figure := range updatedFigures {
+                fmt.Printf("New item: %s\n", figure)
+            }
+        } else {
+            fmt.Println("No new items found")
+        }
+
+        // Reassign
+        oldFigures = newFigures
+
+        // Wait until tomorrow to check again. Needs tweaks
+        time.Sleep(time.Duration(24) * time.Hour)
+    }
+}
+
+func getNewFigures() []string {
     c := colly.NewCollector()
     
     var figures []string
@@ -21,24 +48,7 @@ func main() {
     url := "https://alter-web.jp/figure/"
     c.Visit(url)
 
-    // In RAM for now...
-    oldFigures := []string {
-        "大鳳　春の暁に鳳歌うVer.",
-        "ブレマートン　アクションクルーズVer.",
-        "渡辺 曜",
-        "津島 善子",
-        "コルネリア",
-        "ライダー／紫式部",
-    }
-
-    // Compare the lists
-    var updatedFigures []string
-    if (len(figures) != len(oldFigures)) {
-        updatedFigures = findNewItems(figures, oldFigures)
-    }
-    for _, figure := range updatedFigures {
-        fmt.Printf("New item: %s\n", figure)
-    }
+    return figures 
 }
 
 func findNewItems(newList []string, oldList []string) []string {
