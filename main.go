@@ -27,13 +27,13 @@ func main() {
 		newFigures := getFigures()
 
 		updatedFigures := findNewItems(newFigures, oldFigures)
-        currentTime := time.Now().String()
+		currentTime := time.Now().String()
 		if len(updatedFigures) != 0 {
 			for _, link := range updatedFigures {
-                fmt.Printf("%s: New item at %s\n", currentTime, link)
-                figure := getNewFigureData(link, "Alter", getRootDir("2024"))
+				fmt.Printf("%s: New item at %s\n", currentTime, link)
+				figure := getNewFigureData(link, "Alter", getRootDir("2024"))
 				printFigure(figure)
-                addFigureToDb(figure)
+				addFigureToDb(figure)
 			}
 		} else {
 			fmt.Println(currentTime, ": No new items found")
