@@ -28,19 +28,6 @@ func getRootDir(year string) string {
 	return parentDir
 }
 
-/*
-	func createFigureDir(root string, figure string) string {
-		dir := filepath.Join(root, strings.ReplaceAll(figure, "/", "-"))
-		if _, err := os.Stat(dir); errors.Is(err, os.ErrNotExist) {
-			err := os.Mkdir(dir, os.ModePerm)
-			if err != nil {
-				fmt.Printf("%s", err)
-			}
-			fmt.Printf("Made %s directory\n", dir)
-		}
-		return dir
-	}
-*/
 func downloadImg(imageUrl string, directory string, imageName string) {
 	// Ensure the directory exists
 	if err := os.MkdirAll(directory, 0755); err != nil {
