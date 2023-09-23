@@ -26,18 +26,19 @@ func main() {
 	for true {
 		newFigures := getFigures()
 
-		// Compare the lists
 		updatedFigures := findNewItems(newFigures, oldFigures)
+        currentTime := time.Now().String()
 		if len(updatedFigures) != 0 {
-			for _, figure := range updatedFigures {
-				fmt.Printf("New item: %s\n", figure)
-				printFigure(figure, "Alter", getRootDir("2024"))
+			for _, link := range updatedFigures {
+                fmt.Printf("%s: New item at %s\n", currentTime, link)
+                figure := getNewFigureData(link, "Alter", getRootDir("2024"))
+				printFigure(figure)
+                addFigureToDb(figure)
 			}
 		} else {
-			fmt.Println(time.Now().String(), ": No new items found")
+			fmt.Println(currentTime, ": No new items found")
 		}
 
-		// Reassign
 		oldFigures = newFigures
 		waitOneDay()
 	}
@@ -76,9 +77,7 @@ func waitOneDay() {
 	time.Sleep(time.Duration(24) * time.Hour)
 }
 
-func printFigure(link string, brand string, dir string) {
-	figure := getNewFigureData(link, brand, dir)
-
+func printFigure(figure FigureData) {
 	// Print the fields
 	fmt.Printf("Name: %s\n", figure.Name)
 	fmt.Printf("Material: %s\n", figure.Material)
